@@ -143,9 +143,9 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
     [self.images addObject:image];
     
     if([self.images count] == 1){
-        [_topImageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:[UIImage imageNamed:@"test_1.jpeg"]];
+        [_topImageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:[UIImage new] options:SDWebImageHighPriority];
     }else if([self.images count] == 2){
-        [_bottomImageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:[UIImage imageNamed:@"test_1.jpeg"]];
+        [_bottomImageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:[UIImage new] options:SDWebImageLowPriority];
     }
 }
 
@@ -176,7 +176,8 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
 - (void) start
 {
     _doStop = NO;
-    [self next];
+    
+    [self performSelector:@selector(next) withObject:nil afterDelay:delay];
 }
 
 - (void) next
@@ -192,8 +193,10 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
         } else {
             if (_fromURL) {
                 NSUInteger nextIndex = (_currentIndex+1)%[self.images count];
-                [_topImageView sd_setImageWithURL:[NSURL URLWithString:self.images[_currentIndex]] placeholderImage:[UIImage imageNamed:@"test_1.jpeg"]];
-                [_bottomImageView sd_setImageWithURL:[NSURL URLWithString:self.images[nextIndex]] placeholderImage:[UIImage imageNamed:@"test_1.jpeg"]];
+                
+                [_topImageView sd_setImageWithURL:[NSURL URLWithString:self.images[_currentIndex]] placeholderImage:[UIImage new] options:SDWebImageHighPriority];
+                [_bottomImageView sd_setImageWithURL:[NSURL URLWithString:self.images[nextIndex]] placeholderImage:[UIImage new] options:SDWebImageLowPriority];
+                
                 _currentIndex = nextIndex;
             }else{
                 
@@ -245,8 +248,10 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
             
             if (_fromURL) {
                 
-                [_topImageView sd_setImageWithURL:[NSURL URLWithString:self.images[_currentIndex]] placeholderImage:[UIImage imageNamed:@"test_1.jpeg"]];
-                [_bottomImageView sd_setImageWithURL:[NSURL URLWithString:self.images[prevIndex]] placeholderImage:[UIImage imageNamed:@"test_1.jpeg"]];
+                
+                [_topImageView sd_setImageWithURL:[NSURL URLWithString:self.images[_currentIndex]] placeholderImage:[UIImage new] options:SDWebImageHighPriority];
+                [_bottomImageView sd_setImageWithURL:[NSURL URLWithString:self.images[prevIndex]] placeholderImage:[UIImage new] options:SDWebImageLowPriority];
+                
                 _currentIndex = prevIndex;
                 
             }else{
@@ -338,6 +343,30 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
 {
     _doStop = YES;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(next) object:nil];
+}
+
+- (void) reset
+{
+    _doStop = YES;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(next) object:nil];
+    if ([self.images count] > 1)
+    {
+        _topImageView.image = self.images[0];
+        _bottomImageView.image = self.images[[self.images count] - 1];
+        _currentIndex = 0;
+    }
+}
+
+- (void)cancelCurrentImageLoad
+{
+    if ([_topImageView sd_imageURL])
+    {
+        [_topImageView sd_cancelCurrentImageLoad];
+    }
+    if ([_bottomImageView sd_imageURL])
+    {
+        [_bottomImageView sd_cancelCurrentImageLoad];
+    }
 }
 
 - (KASlideShowState)state

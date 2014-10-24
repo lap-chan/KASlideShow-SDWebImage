@@ -69,6 +69,8 @@ typedef NS_ENUM(NSUInteger, KASlideShowState) {
 - (void) addImage:(UIImage *) image;
 - (void) start;
 - (void) stop;
+- (void) reset;
+- (void) cancelCurrentImageLoad;
 - (void) previous;
 - (void) next;
 
