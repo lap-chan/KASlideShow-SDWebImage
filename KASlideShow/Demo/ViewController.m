@@ -24,7 +24,8 @@
     [_slideshow setTransitionDuration:.5]; // Transition duration
     [_slideshow setTransitionType:KASlideShowTransitionFade]; // Choose a transition type (fade or slide)
     [_slideshow setImagesContentMode:UIViewContentModeScaleAspectFill]; // Choose a content mode for images to display
-    [_slideshow addImagesFromURLs:@[@"http://www.nasibao.com:50043/320/320/3_20145191773.jpg",@"http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/grumpy-dog-11.jpg",@"https://pbs.twimg.com/profile_images/378800000226845887/45c31d1fbcb3d56c3d3e94f5ef3baff8.jpeg"]];
+    [_slideshow addImagesFromURLs:@[@"https://lh6.googleusercontent.com/-079M1x-aOM0/AAAAAAAAAAI/AAAAAAAAA7w/13d7i4rI8ls/photo.jpg",@"http://barkpost-assets.s3.amazonaws.com/wp-content/uploads/2013/11/grumpy-dog-11.jpg",@"https://pbs.twimg.com/profile_images/378800000226845887/45c31d1fbcb3d56c3d3e94f5ef3baff8.jpeg"]];
+
     
     
     [_slideshow start];
